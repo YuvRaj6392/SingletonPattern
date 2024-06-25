@@ -1,36 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gameManager = exports.GameManager = void 0;
-//singleton pattern (make only 1 instance throughout the backend)
+exports.gameManager = void 0;
 class GameManager {
     constructor() {
         this.games = [];
-        this.games = [];
     }
     static getInstance() {
-        if (GameManager.instance) {
-            return GameManager.instance;
+        if (!GameManager.instance) {
+            return (GameManager.instance = new GameManager());
         }
-        GameManager.instance = new GameManager();
         return GameManager.instance;
     }
     addMove(gameId, move) {
-        console.log(`Adding move ${move} to game ${gameId}`);
         const game = this.games.find((game) => game.id === gameId);
-        game === null || game === void 0 ? void 0 : game.moves.push(move);
+        if (game) {
+            game.move.push(move);
+        }
     }
-    addGame(gameId) {
-        const game = {
-            id: gameId,
-            whitePlayerName: "Alice",
-            blackPlayerName: "Denzel",
-            moves: [],
-        };
-        this.games.push(game);
+    addGame(Game) {
+        this.games.push(Game);
     }
     log() {
         console.log(this.games);
     }
 }
-exports.GameManager = GameManager;
 exports.gameManager = GameManager.getInstance();

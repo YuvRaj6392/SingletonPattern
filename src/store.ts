@@ -2,47 +2,37 @@ interface Game {
   id: string;
   whitePlayerName: string;
   blackPlayerName: string;
-  moves: string[];
+  move: string[];
 }
 
-//singleton pattern (make only 1 instance throughout the backend)
-export class GameManager {
-  games: Game[] = [];
+class GameManager {
+  private games: Game[] = [];
 
-  private static instance:GameManager;
+  private static instance: GameManager;
 
-  private constructor() {
-    this.games = [];
-  }
+  private constructor() {}
 
-  static getInstance(){
-    if(GameManager.instance){
-      return GameManager.instance
+  public static getInstance() {
+    if (!GameManager.instance) {
+      return (GameManager.instance = new GameManager());
     }
-    GameManager.instance=new GameManager()
-    return GameManager.instance
+    return GameManager.instance;
   }
 
   addMove(gameId: string, move: string) {
-    console.log(`Adding move ${move} to game ${gameId}`);
     const game = this.games.find((game) => game.id === gameId);
-    game?.moves.push(move);
+    if (game) {
+      game.move.push(move);
+    }
   }
 
-  addGame(gameId:string) {
-    const game = {
-      id: gameId,
-      whitePlayerName: "Alice",
-      blackPlayerName: "Denzel",
-      moves: [],
-    };
-    this.games.push(game);
+  addGame(Game: Game) {
+    this.games.push(Game);
   }
 
-  log(){
-    console.log(this.games)
+  log() {
+    console.log(this.games);
   }
 }
 
-
-export const gameManager= GameManager.getInstance()
+export const gameManager = GameManager.getInstance();
